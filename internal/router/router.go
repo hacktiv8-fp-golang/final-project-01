@@ -1,6 +1,10 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"final-project-01/internal/controller"
+
+	"github.com/gin-gonic/gin"
+)
 
 var PORT = ":8080"
 
@@ -9,7 +13,7 @@ func StartServer() {
 
 	todosRouter := router.Group("/todos")
 	{
-		todosRouter.POST("/")
+		todosRouter.POST("/", controller.CreateTodo)
 		todosRouter.GET("/")
 		todosRouter.GET("/:id")
 		todosRouter.PUT("/:id")
