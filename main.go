@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"final-project-01/internal/database"
+)
 
 func main() {
-	fmt.Println("initialize project")
+	database.StartDB()
 }
