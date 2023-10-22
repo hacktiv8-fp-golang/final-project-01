@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"final-project-01/internal/database"
+	"final-project-01/internal/router"
+)
 
 func main() {
-	fmt.Println("initialize project")
+	database.StartDB()
+	router.StartServer()
 }
