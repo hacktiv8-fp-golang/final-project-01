@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	"github.com/asaskevich/govalidator"
+)
 
 type Todo struct {
 	ID int `gorm:"primaryKey" json:"id"`
@@ -8,4 +12,14 @@ type Todo struct {
 	Completed bool `gorm:"not null;default:false" json:"completed" valid:"required~completed is required"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+func (todo *Todo) Validate() error {
+	_, err := govalidator.ValidateStruct(todo)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
