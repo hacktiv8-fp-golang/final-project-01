@@ -14,8 +14,8 @@ func StartServer() {
 	todosRouter := router.Group("/todos")
 	{
 		todosRouter.POST("/", controller.CreateTodo)
-		todosRouter.GET("/")
-		todosRouter.GET("/:id")
+		todosRouter.GET("/", controller.GetAllData)
+		todosRouter.GET("/:id", controller.GetDataByID)
 		todosRouter.PUT("/:id")
 		todosRouter.DELETE("/:id")
 	}
