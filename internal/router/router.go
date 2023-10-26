@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var PORT = ":8080"
+var PORT = ":8089"
 
 func StartServer() {
 	router := gin.Default()
@@ -14,8 +14,8 @@ func StartServer() {
 	todosRouter := router.Group("/todos")
 	{
 		todosRouter.POST("/", controller.CreateTodo)
-		todosRouter.GET("/")
-		todosRouter.GET("/:id")
+		todosRouter.GET("/", controller.GetAllData)
+		todosRouter.GET("/:id", controller.GetDataByID)
 		todosRouter.PUT("/:id", controller.UpdateTodo)
 		todosRouter.DELETE("/:id", controller.DeleteTodo)
 	}

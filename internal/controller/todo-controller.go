@@ -4,6 +4,7 @@ import (
 	"final-project-01/internal/domain"
 	"final-project-01/internal/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,4 +57,36 @@ func DeleteTodo(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, todoResult)
+}
+
+func GetAllData(context *gin.Context) {
+
+	todoResult, err := service.TodoService.GetAllData()
+
+	if err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+	}
+
+	context.JSON(http.StatusOK, todoResult)
+}
+
+func GetDataByID(context *gin.Context) {
+
+    id := context.Param("id")
+
+    idInt, err := strconv.Atoi(id)
+    if err != nil {
+        context.JSON(http.StatusBadRequest, gin.H{"error": "ID harus berupa angka"})
+        return
+    }
+
+    todoResult, err := service.TodoService.GetDataByID(idInt)
+
+    if err != nil {
+        context.JSON(http.StatusNotFound, gin.H{"error": "Data tidak ditemukan"})
+        return
+    }
+
+    context.JSON(http.StatusOK, todoResult)
 }
