@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"final-project-01/internal/database"
 	"final-project-01/internal/domain"
 	"final-project-01/internal/service"
 	"net/http"
@@ -27,25 +26,34 @@ func CreateTodo(context *gin.Context) {
 	context.JSON(http.StatusCreated, todoResult)
 }
 
-func GetAllData(context *gin.Context) {
-	var data []domain.Todo
-	db := database.GetDB()
-
-	if err := db.Find(&data).Error; err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-	}
-	context.JSON(http.StatusOK, data)
-}
-
-func GetDataByID(context *gin.Context) {
-	var data domain.Todo
-	db := database.GetDB()
+func UpdateTodo(context *gin.Context) {
+	var todo domain.Todo
 	id := context.Param("id")
 
-	if err := db.First(&data, id).Error; err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+	if err := context.ShouldBindJSON(&todo); err != nil {
+		context.JSON(http.StatusUnprocessableEntity, "invalid json body")
+		return
 	}
-	context.JSON(http.StatusOK, data)
+
+	todoResult, err := service.TodoService.UpdateTodo(&todo, id)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	context.JSON(http.StatusOK, todoResult)
+}
+
+func DeleteTodo(context *gin.Context) {
+	id := context.Param("id")
+
+	todoResult, err := service.TodoService.DeleteTodo(id)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	context.JSON(http.StatusOK, todoResult)
 }
