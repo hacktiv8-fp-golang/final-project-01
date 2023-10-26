@@ -89,14 +89,14 @@ func GetTodoByID(context *gin.Context) {
 
     idInt, err := strconv.Atoi(id)
     if err != nil {
-        context.JSON(http.StatusBadRequest, gin.H{"error": "ID harus berupa angka"})
+        context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
         return
     }
 
     todoResult, err := service.TodoService.GetTodoByID(idInt)
 
     if err != nil {
-        context.JSON(http.StatusNotFound, gin.H{"error": "Data tidak ditemukan"})
+        context.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Data with ID %+v was not found", id)})
         return
     }
 
