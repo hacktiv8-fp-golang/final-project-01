@@ -16,8 +16,8 @@ func StartServer() {
 		todosRouter.POST("/", controller.CreateTodo)
 		todosRouter.GET("/")
 		todosRouter.GET("/:id")
-		todosRouter.PUT("/:id")
-		todosRouter.DELETE("/:id")
+		todosRouter.PUT("/:id", controller.UpdateTodo)
+		todosRouter.DELETE("/:id", controller.DeleteTodo)
 	}
 
 	router.Run(PORT)
