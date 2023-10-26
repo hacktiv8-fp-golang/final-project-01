@@ -6,6 +6,7 @@ import (
 	"github.com/asaskevich/govalidator"
 )
 
+// Todo represent the model for an todo
 type Todo struct {
 	ID int `gorm:"primaryKey" json:"id"`
 	Title string `gorm:"not null;" json:"title" valid:"required~title is required"`
