@@ -7,6 +7,8 @@ import (
 
 type todoDomainRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, error)
+	UpdateTodo(*domain.Todo, string) (*domain.Todo, error)
+	DeleteTodo(string) (error)
 }
 
 type todoDomain struct{}
@@ -23,4 +25,34 @@ func (t *todoDomain) CreateTodo(todo *domain.Todo) (*domain.Todo, error) {
 	}
 
 	return todo, nil
+}
+
+func (t *todoDomain) UpdateTodo(input *domain.Todo, id string) (*domain.Todo, error) {
+	db := database.GetDB()
+
+	var todo domain.Todo
+	err := db.First(&todo, id).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	db.Model(&todo).Updates(input)
+
+	return &todo, nil
+}
+
+func (t *todoDomain) DeleteTodo(id string) (error) {
+	db := database.GetDB()
+
+	var todo domain.Todo
+	err := db.First(&todo, id).Error
+
+	if err != nil {
+		return err
+	}
+
+	db.Delete(&todo)
+
+	return nil
 }
