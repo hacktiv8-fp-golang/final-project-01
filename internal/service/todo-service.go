@@ -9,8 +9,8 @@ type todoServiceRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, error)
 	UpdateTodo(*domain.Todo, string) (*domain.Todo, error)
 	DeleteTodo(string) (error)
-	GetAllData() (*[]domain.Todo, error)
-	GetDataByID(id int) (*domain.Todo, error)
+	GetAllTodos() (*[]domain.Todo, error)
+	GetTodoByID(id int) (*domain.Todo, error)
 }
 
 type todoService struct{}
@@ -59,9 +59,9 @@ func (t *todoService) DeleteTodo(id string) (error) {
 	return nil
 }
 
-func (t *todoService) GetAllData() (*[]domain.Todo, error){
+func (t *todoService) GetAllTodos() (*[]domain.Todo, error){
 
-	todoResult, err := repository.TodoDomain.GetAllData()
+	todoResult, err := repository.TodoDomain.GetAllTodos()
 
 	if err != nil{
 		return nil, err
@@ -76,8 +76,8 @@ func (t *todoService) GetAllData() (*[]domain.Todo, error){
 
 }
 
-func (t *todoService) GetDataByID(id int ) (*domain.Todo, error){
-	todoResult, err := repository.TodoDomain.GetDataByID(id)
+func (t *todoService) GetTodoByID(id int ) (*domain.Todo, error){
+	todoResult, err := repository.TodoDomain.GetTodoByID(id)
 
 	if err != nil {
 		return nil, err

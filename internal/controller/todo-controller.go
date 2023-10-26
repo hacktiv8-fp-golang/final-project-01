@@ -71,9 +71,9 @@ func DeleteTodo(context *gin.Context) {
 	})
 }
 
-func GetAllData(context *gin.Context) {
+func GetAllTodos(context *gin.Context) {
 
-	todoResult, err := service.TodoService.GetAllData()
+	todoResult, err := service.TodoService.GetAllTodos()
 
 	if err != nil {
 			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -83,7 +83,7 @@ func GetAllData(context *gin.Context) {
 	context.JSON(http.StatusOK, todoResult)
 }
 
-func GetDataByID(context *gin.Context) {
+func GetTodoByID(context *gin.Context) {
 
     id := context.Param("id")
 
@@ -93,7 +93,7 @@ func GetDataByID(context *gin.Context) {
         return
     }
 
-    todoResult, err := service.TodoService.GetDataByID(idInt)
+    todoResult, err := service.TodoService.GetTodoByID(idInt)
 
     if err != nil {
         context.JSON(http.StatusNotFound, gin.H{"error": "Data tidak ditemukan"})

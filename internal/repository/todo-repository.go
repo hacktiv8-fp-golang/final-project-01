@@ -9,8 +9,8 @@ type todoDomainRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, error)
 	UpdateTodo(*domain.Todo, string) (*domain.Todo, error)
 	DeleteTodo(string) (error)
-	GetAllData() ([]*domain.Todo, error)
-	GetDataByID(id int) (*domain.Todo, error)
+	GetAllTodos() ([]*domain.Todo, error)
+	GetTodoByID(id int) (*domain.Todo, error)
 }
 
 type todoDomain struct{}
@@ -59,7 +59,7 @@ func (t *todoDomain) DeleteTodo(id string) (error) {
 	return nil
 }
 
-func (t *todoDomain) GetAllData() ([]*domain.Todo, error){
+func (t *todoDomain) GetAllTodos() ([]*domain.Todo, error){
 	db := database.GetDB()
 
 	var todos []*domain.Todo
@@ -73,12 +73,12 @@ func (t *todoDomain) GetAllData() ([]*domain.Todo, error){
 	return todos, nil
 }
 
-func (t *todoDomain) GetDataByID(id int) (*domain.Todo, error){
+func (t *todoDomain) GetTodoByID(id int) (*domain.Todo, error){
 	db := database.GetDB()
 	var todo domain.Todo
 
 	err := db.First(&todo, id).Error
-	
+
 	if err != nil {
 		return nil, err
 	}
