@@ -7,8 +7,8 @@ import (
 
 type todoServiceRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, error)
-	UpdateTodo(*domain.Todo, string) (*domain.Todo, error)
-	DeleteTodo(string) (error)
+	UpdateTodo(*domain.Todo, int) (*domain.Todo, error)
+	DeleteTodo(int) (error)
 	GetAllTodos() (*[]domain.Todo, error)
 	GetTodoByID(id int) (*domain.Todo, error)
 }
@@ -33,7 +33,7 @@ func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, error) {
 	return todoResult, nil
 }
 
-func (t *todoService) UpdateTodo(todo *domain.Todo, id string) (*domain.Todo, error) {
+func (t *todoService) UpdateTodo(todo *domain.Todo, id int) (*domain.Todo, error) {
 	err := todo.Validate()
 
 	if err != nil {
@@ -49,7 +49,7 @@ func (t *todoService) UpdateTodo(todo *domain.Todo, id string) (*domain.Todo, er
 	return todoResult, nil
 }
 
-func (t *todoService) DeleteTodo(id string) (error) {
+func (t *todoService) DeleteTodo(id int) (error) {
 	err := repository.TodoDomain.DeleteTodo(id)
 
 	if err != nil {

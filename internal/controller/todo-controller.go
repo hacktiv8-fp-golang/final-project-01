@@ -41,13 +41,19 @@ func CreateTodo(context *gin.Context) {
 func UpdateTodo(context *gin.Context) {
 	var todo domain.Todo
 	id := context.Param("id")
+	parsedID, err := strconv.Atoi(id)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
+		return
+	}
 
 	if err := context.ShouldBindJSON(&todo); err != nil {
 		context.JSON(http.StatusUnprocessableEntity, "invalid json body")
 		return
 	}
 
-	todoResult, err := service.TodoService.UpdateTodo(&todo, id)
+	todoResult, err := service.TodoService.UpdateTodo(&todo, parsedID)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, err.Error())
@@ -59,8 +65,14 @@ func UpdateTodo(context *gin.Context) {
 
 func DeleteTodo(context *gin.Context) {
 	id := context.Param("id")
+	parsedID, err := strconv.Atoi(id)
 
-	err := service.TodoService.DeleteTodo(id)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
+		return
+	}
+
+	err = service.TodoService.DeleteTodo(parsedID)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, err.Error())
@@ -68,7 +80,7 @@ func DeleteTodo(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("Todo with id %+v has been successfully deleted", id),
+		"message": fmt.Sprintf("Todo with id %d has been successfully deleted", parsedID),
 	})
 }
 
