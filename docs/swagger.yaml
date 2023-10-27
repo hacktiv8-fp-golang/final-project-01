@@ -3,13 +3,20 @@ definitions:
     properties:
       completed:
         type: boolean
-      createdAt:
+      created_at:
         type: string
       id:
         type: integer
       title:
         type: string
-      updatedAt:
+      updated_at:
+        type: string
+    type: object
+  domain.TodoRequest:
+    properties:
+      completed:
+        type: boolean
+      title:
         type: string
     type: object
 info:
@@ -25,7 +32,7 @@ paths:
         name: domain.Todo
         required: true
         schema:
-          $ref: '#/definitions/domain.Todo'
+          $ref: '#/definitions/domain.TodoRequest'
       produces:
       - application/json
       responses:
@@ -42,4 +49,6 @@ paths:
           schema:
             type: string
       summary: Create a new todo item.
+      tags:
+      - todos
 swagger: "2.0"

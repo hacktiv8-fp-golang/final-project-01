@@ -12,9 +12,10 @@ import (
 
 // CreateTodo godoc
 // @Summary Create a new todo item.
+// @Tags todos
 // @Accept json
 // @Produce json
-// @Param domain.Todo body domain.Todo true "Todo object to be created"
+// @Param domain.Todo body domain.TodoRequest true "Todo object to be created"
 // @Success 201 {object} domain.Todo "Todo created successfully"
 // @Failure 400 {string} string "Bad Request: invalid request data"
 // @Failure 422 {string} string "Unprocessable Entity: "invalid json body"

@@ -23,6 +23,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "todos"
+                ],
                 "summary": "Create a new todo item.",
                 "parameters": [
                     {
@@ -31,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.Todo"
+                            "$ref": "#/definitions/domain.TodoRequest"
                         }
                     }
                 ],
@@ -65,7 +68,7 @@ const docTemplate = `{
                 "completed": {
                     "type": "boolean"
                 },
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
                 "id": {
@@ -74,7 +77,18 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "updatedAt": {
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TodoRequest": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean"
+                },
+                "title": {
                     "type": "string"
                 }
             }
