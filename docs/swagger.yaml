@@ -23,6 +23,26 @@ info:
   contact: {}
 paths:
   /todos:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all todos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Todo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get all todos
+      tags:
+      - todos
     post:
       consumes:
       - application/json
@@ -49,6 +69,97 @@ paths:
           schema:
             type: string
       summary: Create a new todo item.
+      tags:
+      - todos
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a todo item by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Delete a todo item
+      tags:
+      - todos
+    get:
+      consumes:
+      - application/json
+      description: Get a todo item by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get a todo item
+      tags:
+      - todos
+    put:
+      consumes:
+      - application/json
+      description: Update a todo item by ID
+      parameters:
+      - description: todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Todo object that needs to be updated
+        in: body
+        name: domain.Todo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+      summary: Update a todo item
       tags:
       - todos
 swagger: "2.0"

@@ -38,6 +38,18 @@ func CreateTodo(context *gin.Context) {
 	context.JSON(http.StatusCreated, todoResult)
 }
 
+// UpdateTodo godoc
+// @Summary Update a todo item
+// @Description Update a todo item by ID
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param id path int true "todo ID"
+// @Param domain.Todo body domain.TodoRequest true "Todo object that needs to be updated"
+// @Success 200 {object} domain.Todo
+// @Failure 400 {string} string "Bad Request"
+// @Failure 422 {string} string "Unprocessable Entity"
+// @Router /todos/{id} [put]
 func UpdateTodo(context *gin.Context) {
 	var todo domain.Todo
 	id := context.Param("id")
@@ -63,6 +75,17 @@ func UpdateTodo(context *gin.Context) {
 	context.JSON(http.StatusOK, todoResult)
 }
 
+// DeleteTodo godoc
+// @Summary Delete a todo item
+// @Description Delete a todo item by ID
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param id path int true "Todo ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Router /todos/{id} [delete]
 func DeleteTodo(context *gin.Context) {
 	id := context.Param("id")
 	parsedID, err := strconv.Atoi(id)
@@ -84,6 +107,15 @@ func DeleteTodo(context *gin.Context) {
 	})
 }
 
+// GetAllTodos godoc
+// @Summary Get all todos
+// @Description Retrieve a list of all todos
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Success 200 {object} []domain.Todo
+// @Failure 400 {string} string "Bad Request"
+// @Router /todos [get]
 func GetAllTodos(context *gin.Context) {
 
 	todoResult, err := service.TodoService.GetAllTodos()
@@ -96,17 +128,29 @@ func GetAllTodos(context *gin.Context) {
 	context.JSON(http.StatusOK, todoResult)
 }
 
+// GetTodoByID godoc
+// @Summary Get a todo item
+// @Description Get a todo item by ID
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param id path int true "Todo ID"
+// @Success 200 {object} domain.Todo
+// @Failure 400 {string} string "Bad Request"
+// @Failure 404 {string} string "Not Found"
+// @Router /todos/{id} [get]
 func GetTodoByID(context *gin.Context) {
 
     id := context.Param("id")
 
-    idInt, err := strconv.Atoi(id)
+    parsedID, err := strconv.Atoi(id)
+
     if err != nil {
         context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
         return
     }
 
-    todoResult, err := service.TodoService.GetTodoByID(idInt)
+    todoResult, err := service.TodoService.GetTodoByID(parsedID)
 
     if err != nil {
         context.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Data with ID %+v was not found", id)})
