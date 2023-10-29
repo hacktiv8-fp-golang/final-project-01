@@ -86,7 +86,7 @@ func (t *todoDomain) GetAllTodos() ([]*domain.Todo, utils.Error){
 	}
 
 	if len(todos) == 0 {
-		return nil, utils.NotFound("Data not found")
+		return nil, utils.NotFound("The database is empty. Please add data to continue.")
 	}
 
 	return todos, nil

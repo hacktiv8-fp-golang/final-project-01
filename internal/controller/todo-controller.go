@@ -18,8 +18,9 @@ import (
 // @Produce json
 // @Param domain.Todo body domain.TodoRequest true "Todo object to be created"
 // @Success 201 {object} domain.Todo "Todo created successfully"
-// @Failure 400 {string} string "Bad Request: invalid request data"
-// @Failure 422 {string} string "Unprocessable Entity: "invalid json body"
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 422 {object} utils.ErrorResponse "Unprocessable Entity"
+// @Failure 500 {object} utils.ErrorResponse "Server Error"
 // @Router /todos [post]
 func CreateTodo(context *gin.Context) {
 	todo, err := bindJSONRequest(context)
@@ -48,8 +49,10 @@ func CreateTodo(context *gin.Context) {
 // @Param id path int true "todo ID"
 // @Param domain.Todo body domain.TodoRequest true "Todo object that needs to be updated"
 // @Success 200 {object} domain.Todo
-// @Failure 400 {string} string "Bad Request"
-// @Failure 422 {string} string "Unprocessable Entity"
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Failure 422 {object} utils.ErrorResponse "Unprocessable Entity"
+// @Failure 500 {object} utils.ErrorResponse "Server Error"
 // @Router /todos/{id} [put]
 func UpdateTodo(context *gin.Context) {
 	id, err := getTodoIdParam(context)
@@ -84,8 +87,9 @@ func UpdateTodo(context *gin.Context) {
 // @Produce json
 // @Param id path int true "Todo ID"
 // @Success 200 {string} string "OK"
-// @Failure 400 {string} string "Bad Request"
-// @Failure 404 {string} string "Not Found"
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Failure 500 {object} utils.ErrorResponse "Server Error"
 // @Router /todos/{id} [delete]
 func DeleteTodo(context *gin.Context) {
 	id, err := getTodoIdParam(context)
@@ -114,7 +118,9 @@ func DeleteTodo(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} []domain.Todo
-// @Failure 400 {string} string "Bad Request"
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
+// @Failure 500 {object} utils.ErrorResponse "Server Error"
 // @Router /todos [get]
 func GetAllTodos(context *gin.Context) {
 	todos, err := service.TodoService.GetAllTodos()
@@ -135,8 +141,8 @@ func GetAllTodos(context *gin.Context) {
 // @Produce json
 // @Param id path int true "Todo ID"
 // @Success 200 {object} domain.Todo
-// @Failure 400 {string} string "Bad Request"
-// @Failure 404 {string} string "Not Found"
+// @Failure 400 {object} utils.ErrorResponse "Bad Request"
+// @Failure 404 {object} utils.ErrorResponse "Not Found"
 // @Router /todos/{id} [get]
 func GetTodoByID(context *gin.Context) {
     id, err := getTodoIdParam(context)
