@@ -33,15 +33,23 @@ func (t *todoDomain) UpdateTodo(input *domain.Todo, id int) (*domain.Todo, error
 	db := database.GetDB()
 
 	var todo domain.Todo
+	
 	err := db.First(&todo, id).Error
 
 	if err != nil {
 		return nil, err
 	}
 
-	input.ID = id
-	db.Model(&todo).Updates(input)
+	todo.ID = id
+	todo.Title = input.Title
+	todo.Completed = input.Completed
 
+	err = db.Save(&todo).Error
+
+	if err != nil {
+		return nil, err
+	}
+	
 	return &todo, nil
 }
 
