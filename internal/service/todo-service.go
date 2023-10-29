@@ -3,21 +3,22 @@ package service
 import (
 	"final-project-01/internal/domain"
 	"final-project-01/internal/repository"
+	"final-project-01/internal/utils"
 )
 
 type todoServiceRepo interface {
-	CreateTodo(*domain.Todo) (*domain.Todo, error)
-	UpdateTodo(*domain.Todo, int) (*domain.Todo, error)
-	DeleteTodo(int) (error)
-	GetAllTodos() (*[]domain.Todo, error)
-	GetTodoByID(id int) (*domain.Todo, error)
+	CreateTodo(*domain.Todo) (*domain.Todo, utils.Error)
+	UpdateTodo(*domain.Todo, int) (*domain.Todo, utils.Error)
+	DeleteTodo(int) (utils.Error)
+	GetAllTodos() (*[]domain.Todo, utils.Error)
+	GetTodoByID(id int) (*domain.Todo, utils.Error)
 }
 
 type todoService struct{}
 
 var TodoService todoServiceRepo = &todoService{}
 
-func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, error) {
+func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) {
 	err := todo.Validate()
 
 	if err != nil {
@@ -33,7 +34,7 @@ func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, error) {
 	return todoResult, nil
 }
 
-func (t *todoService) UpdateTodo(todo *domain.Todo, id int) (*domain.Todo, error) {
+func (t *todoService) UpdateTodo(todo *domain.Todo, id int) (*domain.Todo, utils.Error) {
 	err := todo.Validate()
 
 	if err != nil {
@@ -49,7 +50,7 @@ func (t *todoService) UpdateTodo(todo *domain.Todo, id int) (*domain.Todo, error
 	return todoResult, nil
 }
 
-func (t *todoService) DeleteTodo(id int) (error) {
+func (t *todoService) DeleteTodo(id int) (utils.Error) {
 	err := repository.TodoDomain.DeleteTodo(id)
 
 	if err != nil {
@@ -59,7 +60,7 @@ func (t *todoService) DeleteTodo(id int) (error) {
 	return nil
 }
 
-func (t *todoService) GetAllTodos() (*[]domain.Todo, error){
+func (t *todoService) GetAllTodos() (*[]domain.Todo, utils.Error){
 
 	todoResult, err := repository.TodoDomain.GetAllTodos()
 
@@ -76,7 +77,7 @@ func (t *todoService) GetAllTodos() (*[]domain.Todo, error){
 
 }
 
-func (t *todoService) GetTodoByID(id int ) (*domain.Todo, error){
+func (t *todoService) GetTodoByID(id int ) (*domain.Todo, utils.Error){
 	todoResult, err := repository.TodoDomain.GetTodoByID(id)
 
 	if err != nil {

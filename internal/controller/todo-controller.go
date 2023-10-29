@@ -3,6 +3,7 @@ package controller
 import (
 	"final-project-01/internal/domain"
 	"final-project-01/internal/service"
+	"final-project-01/internal/utils"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -21,21 +22,21 @@ import (
 // @Failure 422 {string} string "Unprocessable Entity: "invalid json body"
 // @Router /todos [post]
 func CreateTodo(context *gin.Context) {
-	var todo domain.Todo
-
-	if err := context.ShouldBindJSON(&todo); err != nil {
-		context.JSON(http.StatusUnprocessableEntity, "Invalid JSON body")
-		return
-	}
-
-	todoResult, err := service.TodoService.CreateTodo(&todo)
+	todo, err := bindJSONRequest(context)
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, err.Error())
+		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	context.JSON(http.StatusCreated, todoResult)
+	todo, err = service.TodoService.CreateTodo(todo)
+
+	if err != nil {
+		context.JSON(err.GetStatusCode(), err)
+		return
+	}
+
+	context.JSON(http.StatusCreated, todo)
 }
 
 // UpdateTodo godoc
@@ -51,28 +52,28 @@ func CreateTodo(context *gin.Context) {
 // @Failure 422 {string} string "Unprocessable Entity"
 // @Router /todos/{id} [put]
 func UpdateTodo(context *gin.Context) {
-	var todo domain.Todo
-	id := context.Param("id")
-	parsedID, err := strconv.Atoi(id)
+	id, err := getTodoIdParam(context)
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
+		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	if err := context.ShouldBindJSON(&todo); err != nil {
-		context.JSON(http.StatusUnprocessableEntity, "invalid json body")
-		return
-	}
-
-	todoResult, err := service.TodoService.UpdateTodo(&todo, parsedID)
+	todo, err := bindJSONRequest(context)
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, err.Error())
+		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	context.JSON(http.StatusOK, todoResult)
+	todo, err = service.TodoService.UpdateTodo(todo, id)
+
+	if err != nil {
+		context.JSON(err.GetStatusCode(), err)
+		return
+	}
+
+	context.JSON(http.StatusOK, todo)
 }
 
 // DeleteTodo godoc
@@ -87,23 +88,22 @@ func UpdateTodo(context *gin.Context) {
 // @Failure 404 {string} string "Not Found"
 // @Router /todos/{id} [delete]
 func DeleteTodo(context *gin.Context) {
-	id := context.Param("id")
-	parsedID, err := strconv.Atoi(id)
+	id, err := getTodoIdParam(context)
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
+		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	err = service.TodoService.DeleteTodo(parsedID)
+	err = service.TodoService.DeleteTodo(id)
 
 	if err != nil {
-		context.JSON(http.StatusBadRequest, err.Error())
+		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("Todo with id %d has been successfully deleted", parsedID),
+		"message": fmt.Sprintf("Todo with id %d has been successfully deleted", id),
 	})
 }
 
@@ -117,15 +117,14 @@ func DeleteTodo(context *gin.Context) {
 // @Failure 400 {string} string "Bad Request"
 // @Router /todos [get]
 func GetAllTodos(context *gin.Context) {
-
-	todoResult, err := service.TodoService.GetAllTodos()
+	todos, err := service.TodoService.GetAllTodos()
 
 	if err != nil {
-			context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			context.JSON(err.GetStatusCode(), err)
 			return
 	}
 
-	context.JSON(http.StatusOK, todoResult)
+	context.JSON(http.StatusOK, todos)
 }
 
 // GetTodoByID godoc
@@ -140,22 +139,40 @@ func GetAllTodos(context *gin.Context) {
 // @Failure 404 {string} string "Not Found"
 // @Router /todos/{id} [get]
 func GetTodoByID(context *gin.Context) {
-
-    id := context.Param("id")
-
-    parsedID, err := strconv.Atoi(id)
+    id, err := getTodoIdParam(context)
 
     if err != nil {
-        context.JSON(http.StatusBadRequest, gin.H{"error": "ID must be a number"})
+        context.JSON(err.GetStatusCode(), err)
         return
     }
 
-    todoResult, err := service.TodoService.GetTodoByID(parsedID)
+    todo, err := service.TodoService.GetTodoByID(id)
 
     if err != nil {
-        context.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Data with ID %+v was not found", id)})
+        context.JSON(err.GetStatusCode(), err)
         return
     }
 
-    context.JSON(http.StatusOK, todoResult)
+    context.JSON(http.StatusOK, todo)
+}
+
+func getTodoIdParam(context *gin.Context) (int, utils.Error) {
+	idParam := context.Param("id")
+	todoId, err := strconv.Atoi(idParam)
+
+	if err != nil {
+		return int(0), utils.BadRequest("Todo id must be a number")
+	}
+
+	return int(todoId), nil
+}
+
+func bindJSONRequest(context *gin.Context) (*domain.Todo, utils.Error) {
+	var todo domain.Todo
+
+	if err := context.ShouldBindJSON(&todo); err != nil {
+		return nil, utils.UnprocessibleEntity("Invalid JSON body")
+	}
+
+	return &todo, nil
 }

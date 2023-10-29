@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"final-project-01/internal/utils"
 	"time"
 
 	"github.com/asaskevich/govalidator"
@@ -21,11 +22,11 @@ type TodoRequest struct {
 	Completed bool `json:"completed"`
 }
 
-func (todo *Todo) Validate() error {
+func (todo *Todo) Validate() utils.Error {
 	_, err := govalidator.ValidateStruct(todo)
 
 	if err != nil {
-		return err
+		return utils.BadRequest(err.Error())
 	}
 
 	return nil
