@@ -1,8 +1,8 @@
 package main
 
 import (
-	"final-project-01/internal/database"
-	"final-project-01/internal/router"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/database"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/router"
 )
 
 func main() {

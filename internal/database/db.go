@@ -1,8 +1,8 @@
 package database
 
 import (
-	"final-project-01/internal/config"
-	"final-project-01/internal/domain"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/config"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/domain"
 	"log"
 
 	"gorm.io/driver/postgres"

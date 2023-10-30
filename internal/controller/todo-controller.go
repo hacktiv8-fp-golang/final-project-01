@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"final-project-01/internal/domain"
-	"final-project-01/internal/service"
-	"final-project-01/internal/utils"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/domain"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/service"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/utils"
 	"fmt"
 	"net/http"
 	"strconv"

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"final-project-01/internal/domain"
-	"final-project-01/internal/repository"
-	"final-project-01/internal/utils"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/domain"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/repository"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/utils"
 )
 
 type todoServiceRepo interface {

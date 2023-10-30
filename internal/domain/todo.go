@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"final-project-01/internal/utils"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/utils"
 	"time"
 
 	"github.com/asaskevich/govalidator"

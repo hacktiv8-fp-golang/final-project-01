@@ -1,8 +1,8 @@
 package router
 
 import (
-	"final-project-01/internal/controller"
-	_ "final-project-01/docs"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/controller"
+	_ "github.com/hacktiv8-fp-golang/final-project-01/docs"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerfiles "github.com/swaggo/files"
