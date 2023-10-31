@@ -1,23 +1,24 @@
 package service
 
 import (
-	"final-project-01/internal/domain"
-	"final-project-01/internal/repository"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/domain"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/repository"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/utils"
 )
 
 type todoServiceRepo interface {
-	CreateTodo(*domain.Todo) (*domain.Todo, error)
-	UpdateTodo(*domain.Todo, string) (*domain.Todo, error)
-	DeleteTodo(string) (*domain.Todo, error)
-	GetAllData() (*[]domain.Todo, error)
-	GetDataByID(id int) (*domain.Todo, error)
+	CreateTodo(*domain.Todo) (*domain.Todo, utils.Error)
+	UpdateTodo(*domain.Todo, int) (*domain.Todo, utils.Error)
+	DeleteTodo(int) (utils.Error)
+	GetAllTodos() (*[]domain.Todo, utils.Error)
+	GetTodoByID(id int) (*domain.Todo, utils.Error)
 }
 
 type todoService struct{}
 
 var TodoService todoServiceRepo = &todoService{}
 
-func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, error) {
+func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) {
 	err := todo.Validate()
 
 	if err != nil {
@@ -33,7 +34,7 @@ func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, error) {
 	return todoResult, nil
 }
 
-func (t *todoService) UpdateTodo(todo *domain.Todo, id string) (*domain.Todo, error) {
+func (t *todoService) UpdateTodo(todo *domain.Todo, id int) (*domain.Todo, utils.Error) {
 	err := todo.Validate()
 
 	if err != nil {
@@ -49,19 +50,19 @@ func (t *todoService) UpdateTodo(todo *domain.Todo, id string) (*domain.Todo, er
 	return todoResult, nil
 }
 
-func (t *todoService) DeleteTodo(id string) (*domain.Todo, error) {
-	todoResult, err := repository.TodoDomain.DeleteTodo(id)
+func (t *todoService) DeleteTodo(id int) (utils.Error) {
+	err := repository.TodoDomain.DeleteTodo(id)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return todoResult, nil
+	return nil
 }
 
-func (t *todoService) GetAllData() (*[]domain.Todo, error){
+func (t *todoService) GetAllTodos() (*[]domain.Todo, utils.Error){
 
-	todoResult, err := repository.TodoDomain.GetAllData()
+	todoResult, err := repository.TodoDomain.GetAllTodos()
 
 	if err != nil{
 		return nil, err
@@ -76,8 +77,8 @@ func (t *todoService) GetAllData() (*[]domain.Todo, error){
 
 }
 
-func (t *todoService) GetDataByID(id int ) (*domain.Todo, error){
-	todoResult, err := repository.TodoDomain.GetDataByID(id)
+func (t *todoService) GetTodoByID(id int ) (*domain.Todo, utils.Error){
+	todoResult, err := repository.TodoDomain.GetTodoByID(id)
 
 	if err != nil {
 		return nil, err

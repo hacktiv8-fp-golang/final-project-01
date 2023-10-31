@@ -1,24 +1,32 @@
 package domain
 
 import (
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/utils"
 	"time"
 
 	"github.com/asaskevich/govalidator"
 )
 
+// Todo represent the model for an todo
 type Todo struct {
-	ID int `gorm:"primaryKey" json:"id"`
-	Title string `gorm:"not null;" json:"title" valid:"required~title is required"`
-	Completed bool `gorm:"not null;default:false" json:"completed"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID int `gorm:"primaryKey" json:"id,omitempty"`
+	Title string `json:"title" valid:"required~title is required"`
+	Completed bool `json:"completed"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
-func (todo *Todo) Validate() error {
+// TodoRequest defines the request structure for creating or updating a Todo.
+type TodoRequest struct {
+	Title string `json:"title" valid:"required~title is required"`
+	Completed bool `json:"completed"`
+}
+
+func (todo *Todo) Validate() utils.Error {
 	_, err := govalidator.ValidateStruct(todo)
 
 	if err != nil {
-		return err
+		return utils.BadRequest(err.Error())
 	}
 
 	return nil

@@ -1,0 +1,198 @@
+definitions:
+  domain.Todo:
+    properties:
+      completed:
+        type: boolean
+      created_at:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.TodoRequest:
+    properties:
+      completed:
+        type: boolean
+      title:
+        type: string
+    type: object
+  utils.ErrorResponse:
+    properties:
+      error_type:
+        type: string
+      message:
+        type: string
+      status_code:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all todos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Todo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get all todos
+      tags:
+      - todos
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Todo object to be created
+        in: body
+        name: domain.Todo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TodoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Todo created successfully
+          schema:
+            $ref: '#/definitions/domain.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create a new todo item.
+      tags:
+      - todos
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a todo item by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Delete a todo item
+      tags:
+      - todos
+    get:
+      consumes:
+      - application/json
+      description: Get a todo item by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get a todo item
+      tags:
+      - todos
+    put:
+      consumes:
+      - application/json
+      description: Update a todo item by ID
+      parameters:
+      - description: todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Todo object that needs to be updated
+        in: body
+        name: domain.Todo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Update a todo item
+      tags:
+      - todos
+swagger: "2.0"
