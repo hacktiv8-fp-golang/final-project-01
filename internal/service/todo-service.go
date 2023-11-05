@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/hacktiv8-fp-golang/final-project-01/internal/domain"
 	"github.com/hacktiv8-fp-golang/final-project-01/internal/repository"
 	"github.com/hacktiv8-fp-golang/final-project-01/internal/utils"
@@ -8,7 +9,7 @@ import (
 
 type todoServiceRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, utils.Error)
-	UpdateTodo(*domain.Todo, int) (*domain.Todo, utils.Error)
+	UpdateTodo(*domain.TodoUpdate, int) (*domain.Todo, utils.Error)
 	DeleteTodo(int) (utils.Error)
 	GetAllTodos() (*[]domain.Todo, utils.Error)
 	GetTodoByID(id int) (*domain.Todo, utils.Error)
@@ -34,12 +35,13 @@ func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) 
 	return todoResult, nil
 }
 
-func (t *todoService) UpdateTodo(todo *domain.Todo, id int) (*domain.Todo, utils.Error) {
-	err := todo.Validate()
+func (t *todoService) UpdateTodo(todo *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
+	_, realError := govalidator.ValidateStruct(todo)
 
-	if err != nil {
-		return nil, err
+	if realError != nil {
+		return nil, utils.BadRequest(realError.Error())
 	}
+
 
 	todoResult, err := repository.TodoDomain.UpdateTodo(todo, id)
 

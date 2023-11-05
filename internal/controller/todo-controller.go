@@ -16,7 +16,7 @@ import (
 // @Tags todos
 // @Accept json
 // @Produce json
-// @Param domain.Todo body domain.TodoRequest true "Todo object to be created"
+// @Param domain.Todo body domain.TodoCreate true "Todo object to be created"
 // @Success 201 {object} domain.Todo "Todo created successfully"
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Failure 422 {object} utils.ErrorResponse "Unprocessable Entity"
@@ -47,7 +47,7 @@ func CreateTodo(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "todo ID"
-// @Param domain.Todo body domain.TodoRequest true "Todo object that needs to be updated"
+// @Param domain.Todo body domain.TodoUpdate true "Todo object that needs to be updated"
 // @Success 200 {object} domain.Todo
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
 // @Failure 404 {object} utils.ErrorResponse "Not Found"
@@ -62,21 +62,22 @@ func UpdateTodo(context *gin.Context) {
 		return
 	}
 
-	todo, err := bindJSONRequest(context)
+	var todo domain.TodoUpdate
+
+	if err := context.ShouldBindJSON(&todo); err != nil {
+		errHandler := utils.UnprocessibleEntity("Invalid JSON body")
+		context.JSON(errHandler.GetStatusCode(), errHandler)
+		return
+	}
+
+	result, err := service.TodoService.UpdateTodo(&todo, id)
 
 	if err != nil {
 		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	todo, err = service.TodoService.UpdateTodo(todo, id)
-
-	if err != nil {
-		context.JSON(err.GetStatusCode(), err)
-		return
-	}
-
-	context.JSON(http.StatusOK, todo)
+	context.JSON(http.StatusOK, result)
 }
 
 // DeleteTodo godoc
