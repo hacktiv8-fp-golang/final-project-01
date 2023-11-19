@@ -13,13 +13,13 @@ import (
 
 // CreateTodo godoc
 // @Summary Create a new todo item.
-// @Tags todos
+// @Tags Todos
 // @Accept json
 // @Produce json
 // @Param domain.Todo body domain.TodoCreate true "Todo object to be created"
 // @Success 201 {object} domain.Todo "Todo created successfully"
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
-// @Failure 422 {object} utils.ErrorResponse "Unprocessable Entity"
+// @Failure 422 {object} utils.ErrorResponse "Unprocessible Entity"
 // @Failure 500 {object} utils.ErrorResponse "Server Error"
 // @Router /todos [post]
 func CreateTodo(context *gin.Context) {
@@ -42,11 +42,11 @@ func CreateTodo(context *gin.Context) {
 
 // UpdateTodo godoc
 // @Summary Update a todo item
-// @Description Update a todo item by ID
-// @Tags todos
+// @Description Update a todo item by id
+// @Tags Todos
 // @Accept json
 // @Produce json
-// @Param id path int true "todo ID"
+// @Param id path int true "Todo ID"
 // @Param domain.Todo body domain.TodoUpdate true "Todo object that needs to be updated"
 // @Success 200 {object} domain.Todo
 // @Failure 400 {object} utils.ErrorResponse "Bad Request"
@@ -83,7 +83,7 @@ func UpdateTodo(context *gin.Context) {
 // DeleteTodo godoc
 // @Summary Delete a todo item
 // @Description Delete a todo item by ID
-// @Tags todos
+// @Tags Todos
 // @Accept json
 // @Produce json
 // @Param id path int true "Todo ID"
@@ -115,7 +115,7 @@ func DeleteTodo(context *gin.Context) {
 // GetAllTodos godoc
 // @Summary Get all todos
 // @Description Retrieve a list of all todos
-// @Tags todos
+// @Tags Todos
 // @Accept json
 // @Produce json
 // @Success 200 {object} []domain.Todo
@@ -137,7 +137,7 @@ func GetAllTodos(context *gin.Context) {
 // GetTodoByID godoc
 // @Summary Get a todo item
 // @Description Get a todo item by ID
-// @Tags todos
+// @Tags Todos
 // @Accept json
 // @Produce json
 // @Param id path int true "Todo ID"

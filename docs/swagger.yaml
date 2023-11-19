@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   domain.Todo:
     properties:
@@ -12,7 +13,14 @@ definitions:
       updated_at:
         type: string
     type: object
-  domain.TodoRequest:
+  domain.TodoCreate:
+    properties:
+      completed:
+        type: boolean
+      title:
+        type: string
+    type: object
+  domain.TodoUpdate:
     properties:
       completed:
         type: boolean
@@ -28,8 +36,12 @@ definitions:
       status_code:
         type: integer
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: This is a todo list management application
+  title: Todo Application
+  version: "1.0"
 paths:
   /todos:
     get:
@@ -59,7 +71,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       summary: Get all todos
       tags:
-      - todos
+      - Todos
     post:
       consumes:
       - application/json
@@ -69,7 +81,7 @@ paths:
         name: domain.Todo
         required: true
         schema:
-          $ref: '#/definitions/domain.TodoRequest'
+          $ref: '#/definitions/domain.TodoCreate'
       produces:
       - application/json
       responses:
@@ -82,7 +94,7 @@ paths:
           schema:
             $ref: '#/definitions/utils.ErrorResponse'
         "422":
-          description: Unprocessable Entity
+          description: Unprocessible Entity
           schema:
             $ref: '#/definitions/utils.ErrorResponse'
         "500":
@@ -91,7 +103,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       summary: Create a new todo item.
       tags:
-      - todos
+      - Todos
   /todos/{id}:
     delete:
       consumes:
@@ -124,7 +136,7 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       summary: Delete a todo item
       tags:
-      - todos
+      - Todos
     get:
       consumes:
       - application/json
@@ -152,13 +164,13 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       summary: Get a todo item
       tags:
-      - todos
+      - Todos
     put:
       consumes:
       - application/json
-      description: Update a todo item by ID
+      description: Update a todo item by id
       parameters:
-      - description: todo ID
+      - description: Todo ID
         in: path
         name: id
         required: true
@@ -168,7 +180,7 @@ paths:
         name: domain.Todo
         required: true
         schema:
-          $ref: '#/definitions/domain.TodoRequest'
+          $ref: '#/definitions/domain.TodoUpdate'
       produces:
       - application/json
       responses:
@@ -194,5 +206,5 @@ paths:
             $ref: '#/definitions/utils.ErrorResponse'
       summary: Update a todo item
       tags:
-      - todos
+      - Todos
 swagger: "2.0"

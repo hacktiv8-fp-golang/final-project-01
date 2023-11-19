@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Get all todos",
                 "responses": {
@@ -66,7 +66,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Create a new todo item.",
                 "parameters": [
@@ -76,7 +76,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.TodoRequest"
+                            "$ref": "#/definitions/domain.TodoCreate"
                         }
                     }
                 ],
@@ -94,7 +94,7 @@ const docTemplate = `{
                         }
                     },
                     "422": {
-                        "description": "Unprocessable Entity",
+                        "description": "Unprocessible Entity",
                         "schema": {
                             "$ref": "#/definitions/utils.ErrorResponse"
                         }
@@ -118,7 +118,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Get a todo item",
                 "parameters": [
@@ -152,7 +152,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update a todo item by ID",
+                "description": "Update a todo item by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -160,13 +160,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Update a todo item",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "todo ID",
+                        "description": "Todo ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -177,7 +177,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.TodoRequest"
+                            "$ref": "#/definitions/domain.TodoUpdate"
                         }
                     }
                 ],
@@ -223,7 +223,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Delete a todo item",
                 "parameters": [
@@ -285,7 +285,18 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.TodoRequest": {
+        "domain.TodoCreate": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TodoUpdate": {
             "type": "object",
             "properties": {
                 "completed": {
@@ -315,12 +326,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "localhost:8080",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Todo Application",
+	Description:      "This is a todo list management application",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
