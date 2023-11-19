@@ -9,7 +9,7 @@ import (
 
 type todoDomainRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, utils.Error)
-	UpdateTodo(*domain.Todo, int) (*domain.Todo, utils.Error)
+	UpdateTodo(*domain.TodoUpdate, int) (*domain.Todo, utils.Error)
 	DeleteTodo(int) (utils.Error)
 	GetAllTodos() ([]*domain.Todo, utils.Error)
 	GetTodoByID(id int) (*domain.Todo, utils.Error)
@@ -31,7 +31,7 @@ func (t *todoDomain) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) {
 	return todo, nil
 }
 
-func (t *todoDomain) UpdateTodo(input *domain.Todo, id int) (*domain.Todo, utils.Error) {
+func (t *todoDomain) UpdateTodo(input *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
 	db := database.GetDB()
 
 	var todo domain.Todo
@@ -42,11 +42,7 @@ func (t *todoDomain) UpdateTodo(input *domain.Todo, id int) (*domain.Todo, utils
 		return nil, utils.NotFound(fmt.Sprintf("Data with id %d not found", id))
 	}
 
-	todo.ID = id
-	todo.Title = input.Title
-	todo.Completed = input.Completed
-
-	err = db.Save(&todo).Error
+	err = db.Model(&todo).Updates(input).Error
 
 	if err != nil {
 		return nil, utils.InternalServerError("Something went wrong")
