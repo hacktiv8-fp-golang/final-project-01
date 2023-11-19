@@ -128,8 +128,8 @@ func GetAllTodos(context *gin.Context) {
 	todos, err := service.TodoService.GetAllTodos()
 
 	if err != nil {
-			context.JSON(err.GetStatusCode(), err)
-			return
+		context.JSON(err.GetStatusCode(), err)
+		return
 	}
 
 	context.JSON(http.StatusOK, todos)
@@ -147,21 +147,21 @@ func GetAllTodos(context *gin.Context) {
 // @Failure 404 {object} utils.ErrorResponse "Not Found"
 // @Router /todos/{id} [get]
 func GetTodoByID(context *gin.Context) {
-    id, err := getTodoIdParam(context)
+	id, err := getTodoIdParam(context)
 
-    if err != nil {
-        context.JSON(err.GetStatusCode(), err)
-        return
-    }
+	if err != nil {
+		context.JSON(err.GetStatusCode(), err)
+		return
+	}
 
-    todo, err := service.TodoService.GetTodoByID(id)
+	todo, err := service.TodoService.GetTodoByID(id)
 
-    if err != nil {
-        context.JSON(err.GetStatusCode(), err)
-        return
-    }
+	if err != nil {
+		context.JSON(err.GetStatusCode(), err)
+		return
+	}
 
-    context.JSON(http.StatusOK, todo)
+	context.JSON(http.StatusOK, todo)
 }
 
 func getTodoIdParam(context *gin.Context) (int, utils.Error) {

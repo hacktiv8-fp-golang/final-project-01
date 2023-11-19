@@ -11,8 +11,8 @@ type todoServiceRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, utils.Error)
 	UpdateTodo(*domain.TodoUpdate, int) (*domain.Todo, utils.Error)
 	DeleteTodo(int) (utils.Error)
-	GetAllTodos() (*[]domain.Todo, utils.Error)
-	GetTodoByID(id int) (*domain.Todo, utils.Error)
+	GetAllTodos() ([]*domain.Todo, utils.Error)
+	GetTodoByID(int) (*domain.Todo, utils.Error)
 }
 
 type todoService struct{}
@@ -61,29 +61,23 @@ func (t *todoService) DeleteTodo(id int) (utils.Error) {
 	return nil
 }
 
-func (t *todoService) GetAllTodos() (*[]domain.Todo, utils.Error){
+func (t *todoService) GetAllTodos() ([]*domain.Todo, utils.Error){
 
-	todoResult, err := repository.TodoDomain.GetAllTodos()
+	todos, err := repository.TodoDomain.GetAllTodos()
 
 	if err != nil{
 		return nil, err
 	}
 
-	todos := make([]domain.Todo, len(todoResult))
-    for i, t := range todoResult {
-        todos[i] = *t
-    }
-
-	return &todos, nil
-
+	return todos, nil
 }
 
-func (t *todoService) GetTodoByID(id int ) (*domain.Todo, utils.Error){
-	todoResult, err := repository.TodoDomain.GetTodoByID(id)
+func (t *todoService) GetTodoByID(id int) (*domain.Todo, utils.Error){
+	todo, err := repository.TodoDomain.GetTodoByID(id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return todoResult,nil
+	return todo,nil
 }

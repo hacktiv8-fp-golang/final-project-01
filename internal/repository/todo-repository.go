@@ -12,7 +12,7 @@ type todoDomainRepo interface {
 	UpdateTodo(*domain.TodoUpdate, int) (*domain.Todo, utils.Error)
 	DeleteTodo(int) (utils.Error)
 	GetAllTodos() ([]*domain.Todo, utils.Error)
-	GetTodoByID(id int) (*domain.Todo, utils.Error)
+	GetTodoByID(int) (*domain.Todo, utils.Error)
 }
 
 type todoDomain struct{}
@@ -35,7 +35,7 @@ func (t *todoDomain) UpdateTodo(updatedTodo *domain.TodoUpdate, id int) (*domain
 	db := database.GetDB()
 
 	var todo domain.Todo
-	
+
 	err := db.First(&todo, id).Error
 
 	if err != nil {
@@ -47,7 +47,7 @@ func (t *todoDomain) UpdateTodo(updatedTodo *domain.TodoUpdate, id int) (*domain
 	if err != nil {
 		return nil, utils.InternalServerError("Something went wrong")
 	}
-	
+
 	return &todo, nil
 }
 
