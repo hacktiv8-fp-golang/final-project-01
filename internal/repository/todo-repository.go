@@ -19,19 +19,19 @@ type todoDomain struct{}
 
 var TodoDomain todoDomainRepo = &todoDomain{}
 
-func (t *todoDomain) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) {
+func (t *todoDomain) CreateTodo(newTodo *domain.Todo) (*domain.Todo, utils.Error) {
 	db := database.GetDB()
 
-	err := db.Create(&todo).Error
+	err := db.Create(&newTodo).Error
 
 	if err != nil {
 		return nil, utils.InternalServerError("Something went wrong")
 	}
 
-	return todo, nil
+	return newTodo, nil
 }
 
-func (t *todoDomain) UpdateTodo(input *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
+func (t *todoDomain) UpdateTodo(updatedTodo *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
 	db := database.GetDB()
 
 	var todo domain.Todo
@@ -42,7 +42,7 @@ func (t *todoDomain) UpdateTodo(input *domain.TodoUpdate, id int) (*domain.Todo,
 		return nil, utils.NotFound(fmt.Sprintf("Data with id %d not found", id))
 	}
 
-	err = db.Model(&todo).Updates(input).Error
+	err = db.Model(&todo).Updates(updatedTodo).Error
 
 	if err != nil {
 		return nil, utils.InternalServerError("Something went wrong")

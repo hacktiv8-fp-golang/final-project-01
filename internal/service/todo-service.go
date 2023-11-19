@@ -19,37 +19,36 @@ type todoService struct{}
 
 var TodoService todoServiceRepo = &todoService{}
 
-func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) {
-	err := todo.Validate()
+func (t *todoService) CreateTodo(newTodo *domain.Todo) (*domain.Todo, utils.Error) {
+	err := newTodo.Validate()
 
 	if err != nil {
 		return nil, err
 	}
 
-	todoResult, err := repository.TodoDomain.CreateTodo(todo)
+	createdResult, err := repository.TodoDomain.CreateTodo(newTodo)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return todoResult, nil
+	return createdResult, nil
 }
 
-func (t *todoService) UpdateTodo(todo *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
-	_, realError := govalidator.ValidateStruct(todo)
+func (t *todoService) UpdateTodo(updatedTodo *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
+	_, validationErr := govalidator.ValidateStruct(updatedTodo)
 
-	if realError != nil {
-		return nil, utils.BadRequest(realError.Error())
+	if validationErr != nil {
+		return nil, utils.BadRequest(validationErr.Error())
 	}
 
-
-	todoResult, err := repository.TodoDomain.UpdateTodo(todo, id)
+	updatedResult, err := repository.TodoDomain.UpdateTodo(updatedTodo, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return todoResult, nil
+	return updatedResult, nil
 }
 
 func (t *todoService) DeleteTodo(id int) (utils.Error) {

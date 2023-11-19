@@ -23,21 +23,22 @@ import (
 // @Failure 500 {object} utils.ErrorResponse "Server Error"
 // @Router /todos [post]
 func CreateTodo(context *gin.Context) {
-	todo, err := bindJSONRequest(context)
+	var newTodo domain.Todo
+
+	if err := context.ShouldBindJSON(&newTodo); err != nil {
+		errHandler := utils.UnprocessibleEntity("Invalid JSON body")
+		context.JSON(errHandler.GetStatusCode(), errHandler)
+		return
+	}
+
+	createdResult, err := service.TodoService.CreateTodo(&newTodo)
 
 	if err != nil {
 		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	todo, err = service.TodoService.CreateTodo(todo)
-
-	if err != nil {
-		context.JSON(err.GetStatusCode(), err)
-		return
-	}
-
-	context.JSON(http.StatusCreated, todo)
+	context.JSON(http.StatusCreated, createdResult)
 }
 
 // UpdateTodo godoc
@@ -62,22 +63,22 @@ func UpdateTodo(context *gin.Context) {
 		return
 	}
 
-	var todo domain.TodoUpdate
+	var updatedTodo domain.TodoUpdate
 
-	if err := context.ShouldBindJSON(&todo); err != nil {
+	if err := context.ShouldBindJSON(&updatedTodo); err != nil {
 		errHandler := utils.UnprocessibleEntity("Invalid JSON body")
 		context.JSON(errHandler.GetStatusCode(), errHandler)
 		return
 	}
 
-	result, err := service.TodoService.UpdateTodo(&todo, id)
+	updatedResult, err := service.TodoService.UpdateTodo(&updatedTodo, id)
 
 	if err != nil {
 		context.JSON(err.GetStatusCode(), err)
 		return
 	}
 
-	context.JSON(http.StatusOK, result)
+	context.JSON(http.StatusOK, updatedResult)
 }
 
 // DeleteTodo godoc
@@ -168,18 +169,8 @@ func getTodoIdParam(context *gin.Context) (int, utils.Error) {
 	todoId, err := strconv.Atoi(idParam)
 
 	if err != nil {
-		return int(0), utils.BadRequest("Todo id must be a number")
+		return int(0), utils.BadRequest("ID param must be an integer")
 	}
 
 	return int(todoId), nil
-}
-
-func bindJSONRequest(context *gin.Context) (*domain.Todo, utils.Error) {
-	var todo domain.Todo
-
-	if err := context.ShouldBindJSON(&todo); err != nil {
-		return nil, utils.UnprocessibleEntity("Invalid JSON body")
-	}
-
-	return &todo, nil
 }
