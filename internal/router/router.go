@@ -10,11 +10,6 @@ import (
 
 var PORT = ":8080"
 
-// @Title Todos API
-// @version 1.0
-// @description This API service allows you to manage todo items.
-// @host localhost:8080
-// @BasePath /
 func StartServer() {
 	router := gin.Default()
 

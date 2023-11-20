@@ -11,45 +11,44 @@ type todoServiceRepo interface {
 	CreateTodo(*domain.Todo) (*domain.Todo, utils.Error)
 	UpdateTodo(*domain.TodoUpdate, int) (*domain.Todo, utils.Error)
 	DeleteTodo(int) (utils.Error)
-	GetAllTodos() (*[]domain.Todo, utils.Error)
-	GetTodoByID(id int) (*domain.Todo, utils.Error)
+	GetAllTodos() ([]*domain.Todo, utils.Error)
+	GetTodoByID(int) (*domain.Todo, utils.Error)
 }
 
 type todoService struct{}
 
 var TodoService todoServiceRepo = &todoService{}
 
-func (t *todoService) CreateTodo(todo *domain.Todo) (*domain.Todo, utils.Error) {
-	err := todo.Validate()
+func (t *todoService) CreateTodo(newTodo *domain.Todo) (*domain.Todo, utils.Error) {
+	err := newTodo.Validate()
 
 	if err != nil {
 		return nil, err
 	}
 
-	todoResult, err := repository.TodoDomain.CreateTodo(todo)
+	createdResult, err := repository.TodoDomain.CreateTodo(newTodo)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return todoResult, nil
+	return createdResult, nil
 }
 
-func (t *todoService) UpdateTodo(todo *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
-	_, realError := govalidator.ValidateStruct(todo)
+func (t *todoService) UpdateTodo(updatedTodo *domain.TodoUpdate, id int) (*domain.Todo, utils.Error) {
+	_, validationErr := govalidator.ValidateStruct(updatedTodo)
 
-	if realError != nil {
-		return nil, utils.BadRequest(realError.Error())
+	if validationErr != nil {
+		return nil, utils.BadRequest(validationErr.Error())
 	}
 
-
-	todoResult, err := repository.TodoDomain.UpdateTodo(todo, id)
+	updatedResult, err := repository.TodoDomain.UpdateTodo(updatedTodo, id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return todoResult, nil
+	return updatedResult, nil
 }
 
 func (t *todoService) DeleteTodo(id int) (utils.Error) {
@@ -62,29 +61,23 @@ func (t *todoService) DeleteTodo(id int) (utils.Error) {
 	return nil
 }
 
-func (t *todoService) GetAllTodos() (*[]domain.Todo, utils.Error){
+func (t *todoService) GetAllTodos() ([]*domain.Todo, utils.Error){
 
-	todoResult, err := repository.TodoDomain.GetAllTodos()
+	todos, err := repository.TodoDomain.GetAllTodos()
 
 	if err != nil{
 		return nil, err
 	}
 
-	todos := make([]domain.Todo, len(todoResult))
-    for i, t := range todoResult {
-        todos[i] = *t
-    }
-
-	return &todos, nil
-
+	return todos, nil
 }
 
-func (t *todoService) GetTodoByID(id int ) (*domain.Todo, utils.Error){
-	todoResult, err := repository.TodoDomain.GetTodoByID(id)
+func (t *todoService) GetTodoByID(id int) (*domain.Todo, utils.Error){
+	todo, err := repository.TodoDomain.GetTodoByID(id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return todoResult,nil
+	return todo,nil
 }

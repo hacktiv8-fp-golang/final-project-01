@@ -1,8 +1,13 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is a todo list management application",
+        "title": "Todo Application",
+        "contact": {},
+        "version": "1.0"
     },
+    "host": "localhost:8080",
+    "basePath": "/",
     "paths": {
         "/todos": {
             "get": {
@@ -14,7 +19,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Get all todos",
                 "responses": {
@@ -55,7 +60,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Create a new todo item.",
                 "parameters": [
@@ -65,7 +70,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.TodoRequest"
+                            "$ref": "#/definitions/domain.TodoCreate"
                         }
                     }
                 ],
@@ -83,7 +88,7 @@
                         }
                     },
                     "422": {
-                        "description": "Unprocessable Entity",
+                        "description": "Unprocessible Entity",
                         "schema": {
                             "$ref": "#/definitions/utils.ErrorResponse"
                         }
@@ -107,7 +112,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Get a todo item",
                 "parameters": [
@@ -141,7 +146,7 @@
                 }
             },
             "put": {
-                "description": "Update a todo item by ID",
+                "description": "Update a todo item by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -149,13 +154,13 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Update a todo item",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "todo ID",
+                        "description": "Todo ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -166,7 +171,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.TodoRequest"
+                            "$ref": "#/definitions/domain.TodoUpdate"
                         }
                     }
                 ],
@@ -212,7 +217,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "todos"
+                    "Todos"
                 ],
                 "summary": "Delete a todo item",
                 "parameters": [
@@ -274,7 +279,18 @@
                 }
             }
         },
-        "domain.TodoRequest": {
+        "domain.TodoCreate": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TodoUpdate": {
             "type": "object",
             "properties": {
                 "completed": {

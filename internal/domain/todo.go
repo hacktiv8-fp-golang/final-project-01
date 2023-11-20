@@ -24,7 +24,7 @@ type TodoCreate struct {
 }
 
 type TodoUpdate struct {
-	Title     string `json:"title"`
+	Title     string `json:"title" valid:"required~title is required"`
 	Completed bool   `json:"completed"`
 }
 
