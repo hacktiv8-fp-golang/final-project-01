@@ -1,14 +1,14 @@
 package router
 
 import (
-	"github.com/hacktiv8-fp-golang/final-project-01/internal/controller"
-	_ "github.com/hacktiv8-fp-golang/final-project-01/docs"
-	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	swaggerfiles "github.com/swaggo/files"
-)
+	"os"
 
-var PORT = ":8080"
+	"github.com/gin-gonic/gin"
+	_ "github.com/hacktiv8-fp-golang/final-project-01/docs"
+	"github.com/hacktiv8-fp-golang/final-project-01/internal/controller"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+)
 
 func StartServer() {
 	router := gin.Default()
@@ -24,5 +24,7 @@ func StartServer() {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	router.Run(PORT)
+	var PORT = os.Getenv("PORT")
+
+	router.Run(":" +PORT)
 }
