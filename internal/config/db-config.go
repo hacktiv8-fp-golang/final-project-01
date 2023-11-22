@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -12,7 +11,7 @@ func GetDBConfig() string {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatal("error loading .env file")
+		fmt.Println("error loading .env file")
 	}
 
 	host := os.Getenv("DB_HOST")
