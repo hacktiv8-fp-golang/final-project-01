@@ -41,7 +41,11 @@ func (t *todoDomain) UpdateTodo(updatedTodo *domain.TodoUpdate, id int) (*domain
 		return nil, utils.ParseError(err)
 	}
 
-	err = db.Model(&todo).Updates(updatedTodo).Error
+	todo.ID = id
+	todo.Title = updatedTodo.Title
+	todo.Completed = updatedTodo.Completed
+
+	err = db.Save(&todo).Error
 
 	if err != nil {
 		return nil, utils.ParseError(err)
