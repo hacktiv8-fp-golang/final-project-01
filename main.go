@@ -5,10 +5,10 @@ import (
 	"github.com/hacktiv8-fp-golang/final-project-01/internal/router"
 )
 
-// @Title Todo Application
+// @title Todo Application
 // @version 1.0
 // @description This is a todo list management application
-// @host localhost:8080
+// @host final-project-01-production.up.railway.app
 // @BasePath /
 func main() {
 	database.StartDB()
