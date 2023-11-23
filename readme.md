@@ -3,7 +3,7 @@
 ![Contributors](https://img.shields.io/badge/contributors-3-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-A simple RESTful API for managing to-do tasks. This project is part of the Final Project 01 for the Magang dan Studi Independen (MSIB) program at Hacktiv8.
+A simple RESTful API for managing to-do tasks. This project is part of the Final Project 01 for the Magang dan Studi Independen Bersertifikat (MSIB) program at Hacktiv8.
 
 ## Team Members
 
@@ -13,7 +13,7 @@ A simple RESTful API for managing to-do tasks. This project is part of the Final
 
 ## Project Overview
 
-This project is a RESTful API that allows users to perform basic CRUD (Create, Read, Update, Delete) operations on to-do tasks. It is designed as part of the Final Project 01 for the Magang dan Studi Independen (MSIB) program at Hacktiv8.
+This project is a RESTful API that allows users to perform basic CRUD (Create, Read, Update, Delete) operations on to-do tasks. It is designed as part of the Final Project 01 for the Magang dan Studi Independen Bersertifikat (MSIB) program at Hacktiv8.
 
 ## Features
 
@@ -58,8 +58,9 @@ The project is built using the following technologies:
   DB_USER=Database username (example: postgres)
   DB_PASSWORD=Database user's password (example: postgres)
   DB_PORT=Database port (example: 5432)
-  DB_NAME=Name of the database to be used (example: "postgres")
+  DB_NAME=Name of the database to be used (example: postgres)
   DB_SSLMODE=Database SSL mode (example: disable)
+  PORT=Port for the server to run on (example: 8080)
 ```
 6. Run the project
 ```sh
@@ -181,12 +182,18 @@ You can use various API endpoints to interact with the to-do tasks. See the API 
   DELETE /todos/1
 ```
 
-#### Response (204 No Content):
+#### Response (200 OK):
 ```json
   {
     "message": "Todo with id 1 has been successfully deleted"
   }
 ```
+
+## API Documentation
+The API documentation can be found [here](https://final-project-01-production.up.railway.app/swagger/index.html).
+
+## Deployment
+The API has been deployed and can be accessed [here](https://final-project-01-production.up.railway.app/).
 
 ## Contributing
 
