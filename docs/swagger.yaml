@@ -36,7 +36,7 @@ definitions:
       status_code:
         type: integer
     type: object
-host: final-project-01-production.up.railway.app
+host: localhost:8080
 info:
   contact: {}
   description: This is a todo list management application

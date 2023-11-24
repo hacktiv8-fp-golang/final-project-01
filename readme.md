@@ -189,9 +189,6 @@ You can use various API endpoints to interact with the to-do tasks. See the API 
   }
 ```
 
-## API Documentation
-The API documentation can be found [here](https://final-project-01-production.up.railway.app/swagger/index.html).
-
 ## Deployment
 The API has been deployed and can be accessed [here](https://final-project-01-production.up.railway.app/).
 

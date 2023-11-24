@@ -8,7 +8,7 @@ import (
 // @title Todo Application
 // @version 1.0
 // @description This is a todo list management application
-// @host final-project-01-production.up.railway.app
+// @host localhost:8080
 // @BasePath /
 func main() {
 	database.StartDB()
